@@ -17,6 +17,9 @@ It is a box with a lock. There is an array in the box, but you can get at it onl
 
 Write a function called withBoxUnlocked that takes a function value as argument, unlocks the box, runs the function, and then ensures that the box is locked again before returning, regardless of whether the argument function returned normally or threw an exception.
 
+
+For extra points, make sure that if you call withBoxUnlocked when the box is already unlocked, the box stays unlocked.  */
+
 const box = {
   locked: true,
   unlock() { this.locked = false; },
@@ -29,7 +32,12 @@ const box = {
 };
 
 function withBoxUnlocked(body) {
-  // Your code here.
+  try {
+    if (box.locked) box.unlock();  // Extra credit, checks if it's locked or not first.
+    body;
+  } finally {
+    box.lock();
+  }
 }
 
 withBoxUnlocked(function() {
@@ -45,5 +53,3 @@ try {
 }
 console.log(box.locked);
 // → true
-
-For extra points, make sure that if you call withBoxUnlocked when the box is already unlocked, the box stays unlocked.  */
